@@ -32,12 +32,12 @@ header {
   text-align: center;
 }
 
-.search-form input {
+.form input {
   padding: 8px;
   font-size: 16px;
 }
 
-.search-form button {
+.form button {
   padding: 8px 12px;
   font-size: 16px;
   cursor: pointer;
