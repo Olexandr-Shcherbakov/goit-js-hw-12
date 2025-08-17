@@ -1,4 +1,3 @@
-
 import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
@@ -13,7 +12,6 @@ import {
   showLoadMoreButton,
   hideLoadMoreButton,
 } from './js/render-functions.js';
-
 
 const form = document.querySelector('.form');
 const loadMoreBtn = document.querySelector('.load-more');
@@ -40,7 +38,6 @@ async function onSearch(e) {
   try {
     showLoader();
     const data = await getImagesByQuery(query, page);
-    hideLoader();
 
     if (data.hits.length === 0) {
       iziToast.error({ message: 'No images found. Try another query.' });
@@ -52,20 +49,25 @@ async function onSearch(e) {
 
     if (totalHits > 15) {
       showLoadMoreButton();
+    } else {
+      iziToast.info({
+        message: "We're sorry, but you've reached the end of search results.",
+      });
     }
   } catch (error) {
     iziToast.error({ message: 'Something went wrong!' });
+  } finally {
+    hideLoader(); 
   }
 }
 
 async function onLoadMore() {
   page += 1;
+  hideLoadMoreButton(); 
 
   try {
     showLoader();
     const data = await getImagesByQuery(query, page);
-    hideLoader();
-
     createGallery(data.hits);
 
     smoothScroll();
@@ -76,9 +78,13 @@ async function onLoadMore() {
       iziToast.info({
         message: "We're sorry, but you've reached the end of search results.",
       });
+    } else {
+      showLoadMoreButton(); 
     }
   } catch (error) {
     iziToast.error({ message: 'Something went wrong!' });
+  } finally {
+    hideLoader(); 
   }
 }
 
@@ -91,3 +97,4 @@ function smoothScroll() {
     behavior: 'smooth',
   });
 }
+
